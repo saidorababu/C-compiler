@@ -1,8 +1,9 @@
 #include<bits/stdc++.h>
+#include"file.cpp"
 
-int main(int a){
+int main(int a,int b,int c){
     int a = 5,d;
-    cin>>a; 
+    cin>>a>>b; 
     char c = 'c';
     for(int i = 0; i < 10;i++){
         a = a + 1;

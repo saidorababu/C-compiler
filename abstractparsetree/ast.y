@@ -118,7 +118,7 @@
 %type <fval>	unary_expression 	unary_operator
 %type <fval>	conditional_expression
 %type <fval>	expression 	expression_statement
-%type <fval>	postfix_expression 	
+%type <fval>	postfix_expression 
 
 %type <string> 	declarator
 

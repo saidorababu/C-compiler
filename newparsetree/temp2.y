@@ -3,16 +3,9 @@
 	#include<stdio.h>
 	#include<stdlib.h>
 	#include<string.h>
-	// int valid=1;
 	int yylex();
 	int yyerror(const char *s);
 	int yyparse();
-	// int yywrap();
-
-	extern int st[100];
-	//int top;
-	extern int up;
-	//extern int count;
 	extern void display();
 	struct entry{
 		char arr[20];
@@ -91,9 +84,9 @@ program: headers function_declaration program { printf("program No: %d\n",$$); $
 |;
 
 
-headers: header {printf("headers1\n"); $$ = create_Node("headers", -1, "NULL",1,$1);}
-| headers EOL headers {printf("headers\n"); $$ = create_Node("headers", -1,"NULL", 2, $1, $3);}
-| EOL headers {printf("headers\n"); $$ = create_Node("headers", -1, "NULL",1, $2);}
+headers: header {$$ = create_Node("headers", -1, "NULL",1,$1);}
+| headers EOL headers { $$ = create_Node("headers", -1,"NULL", 2, $1, $3);}
+| EOL headers { $$ = create_Node("headers", -1, "NULL",1, $2);}
 | EOL{ $$ = NULL; };
 
 function_declaration: datatype identifier LPAREN parameter_list RPAREN LBRACE statement_list RBRACE statement_list {printf("Function NO: %d\n",$$); $$ = create_Node("function_declaration", -1, "NULL", 9, $1,$2,$3, $4, $5, $6, $7, $8, $9); };
@@ -105,7 +98,7 @@ parameter_list: datatype identifier COMMA parameter_list { $$ = create_Node("par
 
 
 statement_list: 
-	statement statement_list {printf("statement_list\n"); $$ = create_Node("statement_list", -1, "NULL", 2, $1, $2);}
+	statement statement_list { $$ = create_Node("statement_list", -1, "NULL", 2, $1, $2);}
 |	EOL statement_list { $$ = create_Node("statement_list", -1, "NULL", 1, $2);}
 |	EOL {$$ = NULL;}
 |
@@ -163,7 +156,7 @@ id_list: identifier COMMA id_list { $$ = create_Node("id_list", -1, "NULL", 3, $
 | identifier { $$ = create_Node("id_list", -1, "NULL", 1, $1); }
 
 assignment_statement:
-   F assignmentop E  { printf("assignment-statement\n");$$ = create_Node("assignment_statement", -1, "NULL", 3, $1, $2, $3); $1->value = $3->value; }
+   F assignmentop E  {$$ = create_Node("assignment_statement", -1, "NULL", 3, $1, $2, $3); $1->value = $3->value; }
 ;
 
 E: F assignmentop E  { $$ = create_Node("E", -1,  "NULL", 3, $1, $2, $3); $1->value = $3->value; }
