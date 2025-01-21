@@ -1,5 +1,4 @@
 
-
 int main(int a, int b, int c){
     y = ((2+3*1)+2+3+(4/2 + 6));
     int a = 5,d; 

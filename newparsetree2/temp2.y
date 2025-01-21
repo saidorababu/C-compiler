@@ -64,14 +64,17 @@
 	void addEntry(char *name, char *dtype,int scope){
 		for(int i = 0;i<100;i++){
 			if(strcmp(symbolTable[i].arr,name) == 0 && symbolTable[i].scope == scope){
-				
-				if(strcmp(symbolTable[i].dtype,"NULL") ==  ){
+				//printf("Variable: %s, dtype:%s  \n",name,symbolTable[i].dtype);
+
+				if(strcmp(symbolTable[i].dtype,"null") != 0 ){
 					printf("Variable %s is already declared\n",name); 
 					yyerror("Variable already declared");
 					break;
 					return;
 				}
+
 				strcpy(symbolTable[i].dtype,dtype);
+				printf("Variable: %s, dtype: %s \n",name,symbolTable[i].dtype);
 				// symbolTable[i].value = 0;
 				
 				break;
@@ -150,8 +153,16 @@ headers: header {$$ = create_Node("headers", -1, "NULL","NULL",1,$1);}
 
 function_declaration: datatype identifier LPAREN parameter_list RPAREN LBRACE statement_list RBRACE statement_list {printf("Function NO: %d\n",$$); $2->dtype = $1->value_str; $$ = create_Node("function_declaration", -1, "NULL","NULL", 9, $1,$2,$3, $4, $5, $6, $7, $8, $9); };
 
-parameter_list: datatype identifier COMMA parameter_list { $$ = create_Node("parameter_list", -1, "NULL","NULL",4, $1, $2, $3, $4); }
- | datatype identifier { $$ = create_Node("parameter_list", -1, "NULL","NULL",2, $1, $2);}
+parameter_list: datatype identifier COMMA parameter_list { 
+	$$ = create_Node("parameter_list", -1, "NULL","NULL",4, $1, $2, $3, $4);
+	$2->dtype = $1->dtype;
+	addEntry($2->value_str,$2->dtype,$2->scope);
+	 }
+ | datatype identifier { 
+	$2->dtype = $1->dtype;
+	$$ = create_Node("parameter_list", -1, "NULL","NULL",2, $1, $2);
+	addEntry($2->value_str,$2->dtype,$2->scope);
+ }
 | EOL {$$ = NULL;}
 | { $$ = NULL; };
 

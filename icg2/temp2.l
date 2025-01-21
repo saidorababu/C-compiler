@@ -25,7 +25,7 @@
 		TreeNode *newNode = (TreeNode *)malloc(sizeof(TreeNode));
 		newNode->label = label;
 		newNode->value = value;
-		newNode->value_str = (char*)malloc(sizeof(char)*strlen(value_str) + 1);
+		newNode->value_str = (char*)malloc(sizeof(char) * strlen(value_str) + 1);
 		strcpy(newNode->value_str,value_str);
 		// strcpy(newNode->dtype, );
 		if(strcmp(label,"datatype") == 0) newNode->dtype = newNode->value_str;
@@ -57,44 +57,48 @@ letter [a-zA-Z]
 digit [0-9] 
 id {letter}({letter}|{digit})* 
 comparisionop (<=|>=|==|!=|<|>) 
-logicalop (&&|[|][|])
-leftshift (<<) 
-rightshi (>>) 
 plus [+] 
 minus [-] 
 mult [*] 
 div [/] 
-num ({digit}+) 
-float ({num}\.{num}) 
-arithmeticop ({plus}|{minus}|{mult}|{div}) 
-increment {plus}{plus} 
-decrement {minus}{minus} 
+num ({digit}+)
+increment {plus}{plus}
+decrement {minus}{minus}
 assignop = 
 string (\"(\\.|[^\\"])*\") 
-character (\'(\\.|[^\\'])*\')
-keyword (if|else|const|while|for|int|float|return|void|main|char|"long long"|double|short|long|unsigned|signed|define|struct|enum|typedef|sizeof|sta c|register|auto|break|case|con nue|default|do|goto|switch|cout|cin|endl|bool|using|namespace|std|include|iostream|vector|map|set|queue|stack|push_back|pop_back|pop|push|top|front|priority_queue) 
-inval (({digit}+{id})) 
+character (\'(\\.|[^\\'])*\') 
 comment (\/\/.*|\/\*([^*]|(\*+[^*/]))*\*+\/[\n]*)
+datatype (int|float|double|char|string|"long long"|short|long|void)
+
 
 %%
-[\n] {printf("newline\n");return EOL;}
+[\n] {}
 #include<[^>]+> {printf( "header:%s\n",yytext); yylval.node = createNode("header",-1,yytext,"NULL",0,0); printf("done");  return header;};
 #include\"([^\"]+)\" {printf( "header:%s\n",yytext); yylval.node = createNode("header",-1,yytext,"NULL",0,0);  return header;};
-if { printf("if\n");  yylval.node = createNode("if",-1,yytext,"NULL",0,0);  return if_x; }
+if { printf("if\n");  yylval.node = createNode("if",-1,yytext,"NULL",0,0); return if_x; }
 else { printf("else\n");  yylval.node = createNode("else",-1,yytext,"NULL",0,0);  return else_x; }
-while { printf("while\n"); yylval.node = createNode("while",-1,yytext,"NULL",0,0);  return while_x; }
+while { printf("while\n"); yylval.node = createNode("while",-1,yytext,"NULL",0,0);   return while_x; }
 for {printf("for\n"); yylval.node = createNode("for",-1,yytext,"NULL",0,0);  return for_x; }
 return { printf("return \n"); yylval.node = createNode("return",-1,yytext,"NULL",0,0);  return return_x; }
 printf { printf("printf\n"); yylval.node = createNode("printf",-1,yytext,"NULL",0,0);  return printf_x; }
-cout { printf("cout\n"); yylval.node = createNode("cout",-1,yytext,"NULL",0,0);  return cout; }
+cout { printf("cout\n"); yylval.node = createNode("cout",-1,yytext,"NULL",0,0);   return cout; }
 cin { printf("cin\n"); yylval.node = createNode("cin",-1,yytext,"NULL",0,0);  return cin; }
+size { printf("size\n"); yylval.node = createNode("size",-1,yytext,"NULL",0,0);  return size;}
+swap { printf("swap\n"); yylval.node = createNode("swap",-1,yytext,"NULL",0,0);  return swap; }
+using { printf("using\n"); yylval.node = createNode("using",-1,yytext,"NULL",0,0);  return using; }
+namespace { printf("namespace\n"); yylval.node = createNode("namespace",-1,yytext,"NULL",0,0);  return namespace; }
+std { printf("std\n"); yylval.node = createNode("std",-1,yytext,"NULL",0,0);  return std; }
+#define { printf("define\n"); yylval.node = createNode("define",-1,yytext,"NULL",0,0);  return define; }
 "<<" { printf("insert\n");  yylval.node = createNode("<<",-1,yytext,"NULL",0,0);  return insert; }
 ">>" { printf("extract\n"); yylval.node = createNode(">>",-1,yytext,"NULL",0,0);  return extract; }
+vector { printf("vector:%s\n", yytext); yylval.node = createNode("vector",-1,yytext,"NULL",0,0);  return vector; }
 {assignop} {printf("assignop:%s\n", yytext); yylval.node = createNode("assignop",-1,yytext,"NULL",0,0);  return assignmentop; }
 {comparisionop} { ; printf("compop:%s\n", yytext); strcpy(yylval.str,yytext); yylval.node = createNode("comparisionop",-1,yytext,"NULL",0,0);  return comparisionop; }
-{logicalop} { printf("logicalop:%s\n", yytext); return logicalop; }
-int|float|double|char|string|"long long"|short|long { printf("datatype:%s\n", yytext);declared = 1;strcpy(decl, yytext);  yylval.node = createNode("datatype",-1,yytext,yytext,0,0);  return datatype; }
-{num} { printf("num:%s\n", yytext); yylval.node = createNode("number",atoi(yytext),"NULL","NULL",0,0); return number; }
+&& { ; printf("AND:%s\n", yytext); yylval.node = createNode("AND",-1,yytext,"NULL",0,0);  return AND; }
+\|\| { ; printf("OR:%s\n", yytext); yylval.node = createNode("OR",-1,yytext,"NULL",0,0);  return OR; }
+! { ; printf("NOT:%s\n", yytext); yylval.node = createNode("NOT",-1,yytext,"NULL",0,0);  return NOT; }
+{datatype} { printf("datatype:%s\n", yytext);declared = 1;yylval.node = createNode("datatype",-1,yytext,yytext,0,0);  return datatype; }
+{num} { printf("num:%s\n", yytext); yylval.node = createNode("number",atoi(yytext),yytext,"NULL",0,0); return number; }
 {increment} {  ; printf("unary:%s\n", yytext); yylval.node = createNode("unary",-1,yytext,"NULL",0,0);  return unary; }
 {decrement} {  ; printf("unary:%s\n", yytext); yylval.node = createNode("unary",-1,yytext,"NULL",0,0);  return unary; }
 {id} { if(declared == 1) {installID(yytext);}  printf("id:%s\n", yytext); yylval.node = createNode("id",-1,yytext,"NULL",currscope,0); return identifier; }
@@ -102,18 +106,20 @@ int|float|double|char|string|"long long"|short|long { printf("datatype:%s\n", yy
 {string} { printf("string:%s\n", yytext); yylval.node = createNode("string",-1,yytext,"NULL",0,0);  return string; }
 \n* ;
 {ws} ;
-{plus} { yylval.node = createNode("plus",-1,yytext,"NULL",0,0); return PLUS;}
+{plus} {  yylval.node = createNode("plus",-1,yytext,"NULL",0,0); return PLUS;}
 {minus} { yylval.node = createNode("minus",-1,yytext,"NULL",0,0); return MINUS;}
 {mult} { yylval.node = createNode("mult",-1,yytext,"NULL",0,0); return MUL;}
 {div} { yylval.node = createNode("div",-1,yytext,"NULL",0,0); return DIV;}
+
 "{" { printf("Lbrace:%s\n",yytext); currscope++; yylval.node = createNode("{",-1,yytext,"NULL",0,0);  return LBRACE; }
 "}" { currscope--;printf("Rbrace:%s\n",yytext); yylval.node = createNode("}",-1,yytext,"NULL",0,0);   return RBRACE; }
 "(" {printf ("LPAREN: %s, line: %d\n", yytext, yylineno); currscope++; yylval.node = createNode("LPAREN",-1,yytext,"NULL",0,0); return LPAREN;}
 ")" {printf ("RPAREN: %s, line: %d\n", yytext, yylineno); currscope--; yylval.node = createNode("RPAREN",-1,yytext,"NULL",0,0); return RPAREN;}
-"[" {printf ("LBRACKET: %s, line: %d\n", yytext, yylineno); yylval.node = createNode("[",-1,yytext,"NULL",0,0);  return yytext[0];}
-"]" {printf ("RBRACKET: %s, line: %d\n", yytext, yylineno); yylval.node = createNode("]",-1,yytext,"NULL",0,0);  return yytext[0];}
+"[" {printf ("LBRACKET: %s, line: %d\n", yytext, yylineno); yylval.node = createNode("[",-1,yytext,"NULL",0,0);  return LBRACKET;}
+"]" {printf ("RBRACKET: %s, line: %d\n", yytext, yylineno); yylval.node = createNode("]",-1,yytext,"NULL",0,0);  return RBRACKET;}
 ";" { declared = 0; printf("semicolon :%s,line:%d\n",yytext,yylineno);  yylval.node = createNode(";",-1,yytext,"NULL",0,0);  return SEMICOLON; }
 "," { printf("comma :%s,line:%d\n",yytext,yylineno);  yylval.node = createNode(",",-1,yytext,"NULL",0,0);  return COMMA; }
+"." { return yytext[0]; } 
 {comment} { };
 . { return yytext[0]; }
 %%
@@ -140,11 +146,12 @@ void installID(char *text)
 
 void display()
 {
-	printf("\nSymbol Table\n");
-	printf("Symbol\t\tscope\t\tdtype\n");
+	printf("\n------------------------------------Symbol Table-------------------------------------------\n\n");
+	printf("Symbol\t\t\t\tscope\t\t\t\tdtype\t\t\t\tvalue\n");
+	printf("----------------------------------------------------------------------------------------------\n");
 	for (int i = 0; i < up; i++)
 	{
-		printf("%s\t\t%d\t\t%s\n", symbolTable[i].arr,symbolTable[i].scope, symbolTable[i].dtype);
+		printf("%s\t\t\t\t%d\t\t\t\t%s\t\t\t\t%d\n", symbolTable[i].arr,symbolTable[i].scope, symbolTable[i].dtype,symbolTable[i].value);
 	}
 }
 int yywrap()

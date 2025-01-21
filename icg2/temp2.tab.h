@@ -39,38 +39,48 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     EOL = 258,
-     PLUS = 259,
-     MINUS = 260,
-     MUL = 261,
-     DIV = 262,
-     number = 263,
-     if_x = 264,
-     else_x = 265,
-     while_x = 266,
-     for_x = 267,
-     return_x = 268,
-     printf_x = 269,
-     main_x = 270,
-     assignmentop = 271,
-     comparisionop = 272,
-     logicalop = 273,
-     datatype = 274,
-     unary = 275,
-     identifier = 276,
-     string = 277,
-     character = 278,
-     cout = 279,
-     cin = 280,
-     insert = 281,
-     extract = 282,
-     header = 283,
-     LBRACE = 284,
-     RBRACE = 285,
-     LPAREN = 286,
-     RPAREN = 287,
-     SEMICOLON = 288,
-     COMMA = 289
+     PLUS = 258,
+     MINUS = 259,
+     MUL = 260,
+     DIV = 261,
+     number = 262,
+     swap = 263,
+     size = 264,
+     using = 265,
+     namespace = 266,
+     std = 267,
+     vector = 268,
+     AND = 269,
+     OR = 270,
+     NOT = 271,
+     if_x = 272,
+     else_x = 273,
+     while_x = 274,
+     for_x = 275,
+     return_x = 276,
+     printf_x = 277,
+     main_x = 278,
+     assignmentop = 279,
+     comparisionop = 280,
+     logicalop = 281,
+     datatype = 282,
+     unary = 283,
+     identifier = 284,
+     string = 285,
+     character = 286,
+     cout = 287,
+     cin = 288,
+     insert = 289,
+     extract = 290,
+     header = 291,
+     LBRACE = 292,
+     RBRACE = 293,
+     LPAREN = 294,
+     RPAREN = 295,
+     LBRACKET = 296,
+     RBRACKET = 297,
+     SEMICOLON = 298,
+     COMMA = 299
    };
 #endif
 
@@ -81,7 +91,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 129 "temp2.y"
+#line 509 "temp2.y"
 
     int num;
     char *str;
@@ -90,7 +100,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 94 "temp2.tab.h"
+#line 104 "temp2.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 
+
 int main(int a){
     int a = 5,d;
     cin>>a;
